@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:15 #official postgres Docker image with version 15
+    environment:
+      POSTGRES_DB: blog_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    image: newspring
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_DB: blog_database
+      WAIT_TIMEOUT: 60
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "8090:8090"  # your app port
+    tty: true
+
+volumes:
+  pgdata:
