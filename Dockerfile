@@ -9,6 +9,9 @@ WORKDIR /app
 # Copies everything from your project folder (on your local system) into /app in the container. because We need source code and build files (pom.xml, src/, etc.) to compile the project
 COPY . .
 
+# Make mvnw executable
+RUN chmod +x mvnw
+
 #build the app. delete old biuld and skip tests
 RUN ./mvnw clean package -DskipTests
 
@@ -27,6 +30,9 @@ EXPOSE 8080
 
 # Run the application. This is the command that runs when the container starts.
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
 
 
 
