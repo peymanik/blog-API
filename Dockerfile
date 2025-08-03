@@ -1,11 +1,7 @@
 
-# build jar file in root:
-#./mvnw clean package -DskipTests  # or ./gradlew build -x test
-
-
 # Use a base image with Java
-FROM docker.arvancloud.ir/openjdk:21-jdk-alpine as build
-
+#FROM docker.arvancloud.ir/openjdk:21-jdk-alpine as build
+FROM openjdk:21-jdk as build
 
 # Set the working directory inside the container. All following commands will run in this directory. If it doesn't exist, Docker will create it.
 WORKDIR /app
@@ -16,11 +12,9 @@ COPY . .
 #build the app. delete old biuld and skip tests
 RUN ./mvnw clean package -DskipTests
 
-
-
 #Starts a second final stage. This is the image that will be run in production.
 # in multi-stage Docker build, the first build stage is completely discarded after the final image is built
-FROM docker.arvancloud.ir/openjdk:21-jdk-alpine
+FROM openjdk:21-jdk
 
 WORKDIR /app
 
@@ -38,10 +32,29 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
 
-#run:
-#docker run -d --name springboot-api -p 80:8080 my-springboot-app
 
 
-#graleVM ?
+FROM openjdk:21-jdk as build
+WORKDIR /app
+COPY . .
+RUN ./mvnw clean package -DskipTests
+FROM openjdk:21-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

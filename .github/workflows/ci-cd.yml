@@ -1,0 +1,66 @@
+name: Docker CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/blog-api-image
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t $IMAGE_NAME:latest .
+
+      - name: Push app image to GitHub Container Registry
+        run: docker push $IMAGE_NAME:latest
+
+#  deploy:
+#    name: Deploy to VPS
+#    needs: docker
+#    runs-on: ubuntu-latest
+#    if: github.ref == 'refs/heads/main'  # Only deploy on main branch
+#
+#    steps:
+#      - name: Setup SSH Key
+#        uses: webfactory/ssh-agent@v0.8.1
+#        with:
+#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      - name: Deploy via SSH
+#        uses: appleboy/ssh-action@v0.1.7
+#        with:
+#          host: ${{ secrets.VPS_HOST }}
+#          username: ${{ secrets.VPS_USER }}
+#          script: |
+#            # go to project path in server
+#            cd /home/${{ secrets.VPS_USER }}/your-app-name
+#            git pull origin master
+#
+#            # Login to GitHub Container Registry
+#            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+#
+#            # Pull the latest app image. 'app' is name of image in docker compose
+#            docker compose pull app
+#
+#            # Restart containers with build to pick up changes
+#            docker compose up -d --build
