@@ -18,18 +18,28 @@ import java.util.stream.Collectors;
 public class PostService {
     private  final PostRepository postRepository;
     private final BlogService blogService;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    public  PostResponse getPostById(int id) {
+    public  PostResponse getPostById(Long id) {
         Post post = postRepository.findById(id).orElse(null);
         return modelMapper.map(post, PostResponse.class);
     }
 
-    public  Post getPostEntityById(int id) {
+    public  PostResponse createPost(PostRequest request, Long blogId) {
+        Blog blog = blogService.getBlogEntityById(blogId);
+
+        Post post = modelMapper.map(request, Post.class);
+        post.setId(null);
+        post.setBlog(blog);
+        Post savedPost = postRepository.save(post);
+        return modelMapper.map(savedPost, PostResponse.class);
+    }
+
+    public  Post getPostEntityById(Long id) {
         return postRepository.findById(id).orElse(null);
     }
 
-    public  void deletePostById(Integer Id) {
+    public void deletePostById(Long Id) {
         postRepository.deleteById(Id);
     }
 
@@ -43,7 +53,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public List<PostResponse> getAllPostsOfBlog(Integer id) {
+    public List<PostResponse> getAllPostsOfBlog(Long id) {
         Blog blog = blogService.getBlogEntityById(id);
         List<Post> posts = blog.getPosts();
         return posts.stream()

@@ -20,12 +20,13 @@ public class BlogService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public Blog getBlogById(int id) {
+    public Blog getBlogObjectById(Long id) {
         return blogRepository.findById(id).orElse(null);
     }
 
     public BlogResponse updateBlog(BlogRequest request) {
         Blog blog = blogRepository.findById(request.getId()).orElse(null);
+        blog.setTitle(request.getTitle());
         Blog savedBlog = blogRepository.save(blog);
         return modelMapper.map(savedBlog, BlogResponse.class);
     }
@@ -37,16 +38,16 @@ public class BlogService {
                 .collect(Collectors.toList());
     }
 
-    public BlogResponse getBlogById(Integer id) {
+    public BlogResponse getBlogById(Long id) {
         Blog blog = blogRepository.findById(id).orElse(null);
         return modelMapper.map(blog, BlogResponse.class);
     }
 
-    public Blog getBlogEntityById(Integer id) {
+    public Blog getBlogEntityById(Long id) {
         return blogRepository.findById(id).orElse(null);
     }
 
-    public void deleteBlogById(Integer id){
+    public void deleteBlogById(Long id){
         blogRepository.deleteById(id);
     }
 

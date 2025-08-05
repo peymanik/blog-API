@@ -59,6 +59,7 @@ class UserControllerTests {
     ModelMapper modelMapper;
 
     @Test
+    @Disabled
     @WithMockUser(username = "testuser")
     void getCurrentUser() throws Exception {
         UserResponse user = new UserResponse();

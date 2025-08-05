@@ -10,10 +10,13 @@ import com.peyman.blogapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class UserController {
     private final UserService userService;
     private final BlogService blogService;
     private final PostService postService;
+    private final ModelMapper modelMapper;
 
 
     @GetMapping("/users/me")
@@ -60,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/users/blog")
-    public BlogResponse getBlogById(@RequestParam Integer id) {
+    public BlogResponse getBlogById(@RequestParam Long id) {
         return blogService.getBlogById(id);
     }
 
@@ -81,34 +85,38 @@ public class UserController {
         return blogService.getAllBlogs();
     }
 
-
     @PutMapping("/users/blogs")
     public BlogResponse updateBlog(@RequestBody BlogRequest request, Principal principal) {
         String username = principal.getName();
-        Blog blog = blogService.getBlogByTitle(request.getTitle());
-        if (blog.getUser().getUserName() == username) {
+        Blog Blog = blogService.getBlogEntityById(request.getId());
+        if (Blog.getUser().getUserName() == username) {
             return blogService.updateBlog(request);
+        } else {
+            // return empty body??? change to exeption
+            return new BlogResponse();
         }
-        return null;
     }
 
     @GetMapping("/users/blogs/posts")
-    public List<PostResponse> getAllPostsOfBlog(@RequestParam Integer blogId) {
+    public List<PostResponse> getAllPostsOfBlog(@RequestParam Long blogId) {
         return postService.getAllPostsOfBlog(blogId);
     }
 
     @GetMapping("/users/blogs/post")
-    public PostResponse getPostById(@RequestParam Integer postId) {
+    public PostResponse getPostById(@RequestParam Long postId) {
         return postService.getPostById(postId);
         //increase view of post??
     }
 
     @DeleteMapping("/users/blogs/posts")
-    public void deletePostById(@RequestParam Integer postId, Principal principal) {
+    public void deletePostById(@RequestParam Long postId, Principal principal) throws AccessDeniedException {
         String username = principal.getName();
         Post post = postService.getPostEntityById(postId);
         if (post.getBlog().getUser().getUserName() == username) {
             postService.deletePostById(postId);
+        }
+        else {
+            throw new AccessDeniedException("You are not Owner of post");
         }
     }
 
@@ -123,12 +131,13 @@ public class UserController {
     }
 
     @PostMapping("/users/blogs/posts")
-    public PostResponse createPost(@Valid @RequestBody PostRequest request, @RequestParam Integer blogId, Principal principal) {
+    public PostResponse createPost(@Valid @RequestBody PostRequest request, @RequestParam Long blogId, Principal principal) {
         String username = principal.getName();
         Blog blog = blogService.getBlogEntityById(blogId);
-        request.setId(0);
+//        request.setId(0L);
+        request.setId(null);
         if (blog.getUser().getUserName() == username) {
-            return postService.updatePost(request);
+            return postService.createPost(request, blogId);
         }
         else return null;
     }

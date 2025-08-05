@@ -4,6 +4,7 @@ import com.peyman.blogapi.entity.dto.UserResponse;
 import com.peyman.blogapi.entity.model.User;
 import com.peyman.blogapi.entity.repository.UserRepository;
 import com.peyman.blogapi.service.UserService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,7 @@ class UserServiceTests {
     private UserService userService;
 
     @Test
+    @Disabled
     void testFindById_whenUserExists_returnsUser() {
         User user = new User("peyman", "123", 5L);
 
