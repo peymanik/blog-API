@@ -1,4 +1,4 @@
-package com.peyman.blogapi.entity.dto;
+package com.peyman.blogapi.dto.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 
 @Getter

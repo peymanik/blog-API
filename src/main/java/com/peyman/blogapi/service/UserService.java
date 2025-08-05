@@ -1,15 +1,16 @@
 package com.peyman.blogapi.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.peyman.blogapi.entity.dto.UserRequest;
-import com.peyman.blogapi.entity.dto.UserResponse;
-import com.peyman.blogapi.entity.model.User;
-import com.peyman.blogapi.entity.repository.UserRepository;
+import com.peyman.blogapi.dto.model.UserRequest;
+import com.peyman.blogapi.dto.model.UserResponse;
+import com.peyman.blogapi.entity.User;
+import com.peyman.blogapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -32,13 +33,16 @@ public class UserService {
         return userRepository.findByUserName(username);
     }
 
-    public UserResponse getUserById(Integer id) {
+    public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         return modelMapper.map(user, UserResponse.class);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        List<User> users =  userRepository.findAll();
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserResponse.class))
+                .collect(Collectors.toList());
     }
 
     public User saveUser(User user) {
@@ -49,19 +53,14 @@ public class UserService {
         return userRepository.deleteByUserName((username));
     }
 
-    public void deleteUserById(Integer id) {
-        userRepository.deleteById(id);
-    }
-
     public UserResponse updateUser(UserRequest userRequest) {
-//        User user = objectMapper.convertValue(userRequest, User.class);
-//        User savedUser = userRepository.save(user);
-//        return objectMapper.convertValue(savedUser, UserResponse.class);
-
-//        User user = objectMapper.convertValue(userRequest, User.class);
         User user = modelMapper.map(userRequest, User.class);
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserResponse.class);
+    }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 
 }

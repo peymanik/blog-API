@@ -1,10 +1,10 @@
 package com.peyman.blogapi.service;
 
-import com.peyman.blogapi.entity.dto.BlogRequest;
-import com.peyman.blogapi.entity.dto.BlogResponse;
-import com.peyman.blogapi.entity.model.Blog;
-import com.peyman.blogapi.entity.model.User;
-import com.peyman.blogapi.entity.repository.BlogRepository;
+import com.peyman.blogapi.dto.model.BlogRequest;
+import com.peyman.blogapi.dto.model.BlogResponse;
+import com.peyman.blogapi.entity.Blog;
+import com.peyman.blogapi.entity.User;
+import com.peyman.blogapi.repository.BlogRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

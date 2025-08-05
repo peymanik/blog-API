@@ -1,15 +1,14 @@
 package com.peyman.blogapi.integration;
 
-import com.peyman.blogapi.entity.model.Blog;
-import com.peyman.blogapi.entity.model.Post;
-import com.peyman.blogapi.entity.model.User;
-import com.peyman.blogapi.entity.repository.BlogRepository;
-import com.peyman.blogapi.entity.repository.PostRepository;
-import com.peyman.blogapi.entity.repository.UserRepository;
+import com.peyman.blogapi.entity.Blog;
+import com.peyman.blogapi.entity.Post;
+import com.peyman.blogapi.entity.User;
+import com.peyman.blogapi.repository.BlogRepository;
+import com.peyman.blogapi.repository.PostRepository;
+import com.peyman.blogapi.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

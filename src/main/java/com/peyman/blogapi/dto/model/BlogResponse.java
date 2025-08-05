@@ -1,4 +1,4 @@
-package com.peyman.blogapi.entity.dto;
+package com.peyman.blogapi.dto.model;
 
 
 import lombok.AllArgsConstructor;

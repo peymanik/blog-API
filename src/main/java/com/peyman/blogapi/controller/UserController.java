@@ -1,9 +1,8 @@
 package com.peyman.blogapi.controller;
 
-import com.peyman.blogapi.entity.dto.*;
-import com.peyman.blogapi.entity.model.Blog;
-import com.peyman.blogapi.entity.model.Post;
-import com.peyman.blogapi.entity.model.User;
+import com.peyman.blogapi.dto.model.*;
+import com.peyman.blogapi.entity.Blog;
+import com.peyman.blogapi.entity.Post;
 import com.peyman.blogapi.service.BlogService;
 import com.peyman.blogapi.service.PostService;
 import com.peyman.blogapi.service.UserService;
@@ -11,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -75,7 +73,7 @@ public class UserController {
     }
 
     @GetMapping("/user/blogs")
-    public List<BlogResponse> getAllBlogsOfAUser(@RequestParam Integer userId) {
+    public List<BlogResponse> getAllBlogsOfAUser(@RequestParam Long userId) {
         UserResponse user = userService.getUserById(userId);
         return blogService.getAllUserBlogs(user.getUserName());
     }

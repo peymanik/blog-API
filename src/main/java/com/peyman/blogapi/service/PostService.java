@@ -1,11 +1,11 @@
 package com.peyman.blogapi.service;
 
 
-import com.peyman.blogapi.entity.dto.PostRequest;
-import com.peyman.blogapi.entity.dto.PostResponse;
-import com.peyman.blogapi.entity.model.Blog;
-import com.peyman.blogapi.entity.model.Post;
-import com.peyman.blogapi.entity.repository.PostRepository;
+import com.peyman.blogapi.dto.model.PostRequest;
+import com.peyman.blogapi.dto.model.PostResponse;
+import com.peyman.blogapi.entity.Blog;
+import com.peyman.blogapi.entity.Post;
+import com.peyman.blogapi.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -49,8 +49,11 @@ public class PostService {
         return modelMapper.map(savedPost,PostResponse.class);
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostResponse> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        return posts.stream()
+                .map(post -> modelMapper.map(post, PostResponse.class))
+                .collect(Collectors.toList());
     }
 
     public List<PostResponse> getAllPostsOfBlog(Long id) {

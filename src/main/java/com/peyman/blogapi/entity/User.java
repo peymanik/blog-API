@@ -1,4 +1,4 @@
-package com.peyman.blogapi.entity.model;
+package com.peyman.blogapi.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.peyman.blogapi.entity.model;
+package com.peyman.blogapi.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,16 +10,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
-@Table(name="post")
+@Table(name="blog")
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Post {
+public class Blog {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
@@ -27,15 +29,6 @@ public class Post {
 
     @Column(name="title")
     private String title;
-
-    @Column(name="content")
-    private String content;
-
-    @Column(name="likes")
-    private Long likes;
-
-    @Column(name="views")
-    private Long views;
 
     @CreatedDate
     @Column(name = "created_date")
@@ -47,9 +40,10 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private Blog blog;
+    private User user;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Post> posts = new ArrayList<>();
 
 
 }
-
-

@@ -1,7 +1,6 @@
-package com.peyman.blogapi.entity.repository;
+package com.peyman.blogapi.repository;
 
-import com.peyman.blogapi.entity.model.Blog;
-import com.peyman.blogapi.entity.model.Post;
+import com.peyman.blogapi.entity.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

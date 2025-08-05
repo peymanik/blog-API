@@ -1,17 +1,14 @@
 package com.peyman.blogapi.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.peyman.blogapi.dto.TokenResponse;
-import com.peyman.blogapi.entity.dto.BlogRequest;
-import com.peyman.blogapi.entity.dto.PostRequest;
-import com.peyman.blogapi.entity.dto.UserRequest;
-import com.peyman.blogapi.entity.dto.UserResponse;
-import com.peyman.blogapi.entity.model.Blog;
-import com.peyman.blogapi.entity.model.Post;
-import com.peyman.blogapi.entity.model.Role;
-import com.peyman.blogapi.entity.model.User;
-import com.peyman.blogapi.entity.repository.BlogRepository;
-import com.peyman.blogapi.entity.repository.UserRepository;
+import com.peyman.blogapi.dto.auth.TokenResponse;
+import com.peyman.blogapi.dto.model.BlogRequest;
+import com.peyman.blogapi.dto.model.PostRequest;
+import com.peyman.blogapi.dto.model.UserRequest;
+import com.peyman.blogapi.entity.Blog;
+import com.peyman.blogapi.entity.Post;
+import com.peyman.blogapi.entity.User;
+import com.peyman.blogapi.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -19,24 +16,16 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -64,32 +53,6 @@ public class UserControllerTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
-//    @BeforeEach
-//    public void insertFakeUser() {
-//        User user = new User();
-//        Role role = new Role();
-//        role.setName("ROLE_FAKE");
-//        user.setUserName("fakeUser");
-//        user.setPassword("fakePass");
-//        Set<Role> roles = new HashSet<>();
-//        roles.add(role);
-//        user.setRoles(roles);
-//        User insertedUser = userRepository.save(user);
-//    }
-
-//    @BeforeEach
-//    public Blog insertFakeBlog() {
-//        Blog blog = new Blog();
-//        blog.setId(null);
-//        blog.setTitle("fakeTitle");
-////        blog.setUser();
-////        blog.setUser(new User());
-////        blog.setPosts();
-//
-//        return blogRepository.save(blog);
-//    }
 
 
 //    @Disabled

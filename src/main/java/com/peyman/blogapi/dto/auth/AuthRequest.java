@@ -1,4 +1,4 @@
-package com.peyman.blogapi.dto;
+package com.peyman.blogapi.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.peyman.blogapi.security;
 
-import com.peyman.blogapi.entity.model.User;
+import com.peyman.blogapi.entity.User;
 import com.peyman.blogapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
