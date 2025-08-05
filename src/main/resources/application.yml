@@ -3,14 +3,10 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
-#    drop-first: true
-  #    contexts: dev # Optional: environment-based migrations
-#    default-schema: public
   application:
     name: blogapi
   datasource:
-#    url: jdbc:postgresql://postgres:5432/blog_database
-    url: jdbc:postgresql://localhost:5432/blog_database
+    url: jdbc:postgresql://postgres:5432/blog_database
     username: postgres
     password: 123
 
@@ -20,10 +16,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-#    properties:
-#      hibernate:
-#        hbm2ddl:
-#          auto: none
   main:
     lazy-initialization: true
     banner-mode: off
@@ -33,23 +25,12 @@ spring:
       password: 123
 logging:
   level:
-#    sun:
-#      rmi:
-#        transport:
-#          tcp: INFO
-#        loader: INFO
-#    javax:
-#      management:
-#        remote:
-#          rmi: INFO
-#    org:
     web: debug
     root: info
     sql: debug
 server:
   port: 8090
   servlet:
-#    context-path:
     session:
       timeout: 15m
 info:
